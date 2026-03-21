@@ -262,4 +262,101 @@ public class PaymentsApiTests
         var response = await client.PostAsJsonAsync("/payments/callback", body, JsonOptions);
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
+
+    [Fact]
+    public async Task PostPayments_MissingOrderId_ReturnsBadRequest()
+    {
+        await using var factory = new ApiFactory();
+        var client = factory.CreateClient();
+
+        var body = new
+        {
+            amount = 1m,
+            currency = "BRL",
+            payment_method = "pix",
+            method_details = new { pix_key = "k" },
+            customer = new { name = "A", document = "1" }
+        };
+
+        var response = await client.PostAsJsonAsync("/payments", body, JsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PostPayments_EmptyOrderId_ReturnsBadRequest()
+    {
+        await using var factory = new ApiFactory();
+        var client = factory.CreateClient();
+
+        var body = new
+        {
+            order_id = "",
+            amount = 1m,
+            currency = "BRL",
+            payment_method = "pix",
+            method_details = new { pix_key = "k" },
+            customer = new { name = "A", document = "1" }
+        };
+
+        var response = await client.PostAsJsonAsync("/payments", body, JsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PostPayments_NullMethodDetails_ReturnsBadRequest()
+    {
+        await using var factory = new ApiFactory();
+        var client = factory.CreateClient();
+
+        var body = new
+        {
+            order_id = "ORD-X",
+            amount = 1m,
+            currency = "BRL",
+            payment_method = "pix",
+            customer = new { name = "A", document = "1" }
+        };
+
+        var response = await client.PostAsJsonAsync("/payments", body, JsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PostPayments_NullCustomer_ReturnsBadRequest()
+    {
+        await using var factory = new ApiFactory();
+        var client = factory.CreateClient();
+
+        var body = new
+        {
+            order_id = "ORD-X",
+            amount = 1m,
+            currency = "BRL",
+            payment_method = "pix",
+            method_details = new { pix_key = "k" }
+        };
+
+        var response = await client.PostAsJsonAsync("/payments", body, JsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task PostPayments_InvalidPaymentMethod_ReturnsBadRequest()
+    {
+        await using var factory = new ApiFactory();
+        var client = factory.CreateClient();
+
+        var body = new
+        {
+            order_id = "ORD-X",
+            amount = 1m,
+            currency = "BRL",
+            payment_method = "debit_card",
+            method_details = new { pix_key = "k" },
+            customer = new { name = "A", document = "1" }
+        };
+
+        var response = await client.PostAsJsonAsync("/payments", body, JsonOptions);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
 }
