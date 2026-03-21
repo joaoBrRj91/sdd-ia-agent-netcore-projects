@@ -4,11 +4,7 @@ You are a senior .NET engineer.
 
 ## ⚙️ Execution Workflow
 
-Generate xUnit tests that:
+Generate code of the spec following spec architecture `~/specs/architecture.backend.md`:
 
 - Cover all rules
 - Include success and failure cases
-- Use clear naming conventions
-- Assume an ASP.NET Core API
-
-Output only the test code.
