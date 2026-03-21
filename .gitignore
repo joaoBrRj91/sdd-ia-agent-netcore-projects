@@ -1,0 +1,287 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+*.swp
+*.swo
+*~
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+.nuget/
+NuGetFallbackFolder/
+.nuget/packages/
+.nuget/NuGet.config
+.nuget/NuGet.exe
+.nuget/packages.config
+
+# Entity Framework
+*.edmx.diagram
+
+# Local user-specific settings
+launchSettings.json
+appsettings.Development.json
+appsettings.Local.json
+
+# Backup & temporary files
+*.bak
+*.tmp
+*~
+*.swp
+*.swo
+.DS_Store
+
+# NcrunchTemp
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield output folder
+[Ee]xpress/
+
+# DocProject is a documentation generator add-in
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once directory
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App publish settings
+PublishProfiles/
+
+# RIA/Silverlight projects
+Generated_Code/
+
+# Backup & temporary files
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# Business Intelligence projects
+*.rdl.data
+*.bim.layout
+*.bim_*.settings
+
+# Microsoft Fakes
+FakesAssemblies/
+
+# GhostDoc plugin setting file
+*.GhostDoc.xml
+
+# Node.js Tools for Visual Studio
+.ntvs_analysis.dat
+node_modules/
+
+# Visual Studio 6 build-related files
+*.plg
+*.opt
+
+# Visual Studio 6 workspace options file
+*.opt
+
+# Visual Studio LightSwitch build output
+**/*.HTMLClient/GeneratedArtifacts
+**/*.DesktopClient/GeneratedArtifacts
+**/*.DesktopClient/ModelManifest.xml
+**/*.Server/GeneratedArtifacts
+**/*.Server/ModelManifest.xml
+_Pvt_Extensions
+
+# Paket dependency manager
+.paket/paket.exe
+paket-files/
+
+# FAKE - F# Make
+.fake/
+
+# CodeRush personal settings
+.codSettings
+
+# Python Tools for Visual Studio (PTVS)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cake - Uncomment this line if you do not want to checkin Cake source files
+# tools/
+# !tools/packages.config
+
+# Tabs Studio
+*.tss
+
+# Telerik's JustMock configuration file
+*.jmconfig
+
+# BizTalk build output
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+
+# OpenCover UI Analysis Results
+OpenCover/
+
+# Azure Stream Analytics local run output
+ASALocalRun/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# NVidia Nsight GPU debugger configuration file
+*.nvuser
+
+# MFractors (Xamarin productivity tool) working folder
+.mfractor/
+
+# Local History for Visual Studio
+.localhistory/
+
+# BeatPulse healthcheck temp database
+healthchecksdb
+
+# Ionide (Fsharp VS Code tools) working folder
+.ionide/
+
+# Rider
+.idea/
+*.sln.iml
+riderModule.iml
+/_ReSharper.Caches/
+
+# Mac
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Application Insights Telemetry
+ApplicationInsights.config
+bin/Debug/net*/
+bin/Release/net*/
+obj/Debug/net*/
+obj/Release/net*/
+
+# Certificate files
+*.pfx
+*.pem
+*.cer
+*.crt
+*.key
+
+# Configuration with secrets
+secrets.json
+appsettings.secrets.json
+
+# Package lock files (optional - uncomment if you want to commit them)
+# packages.lock.json
+
+# Diagnostic files
+*.log
+diagnostic/
+*.etl
+*.evt
+
+# Temporary test files
+test-diagnostics.log
+vsTestLogs/
+
+# Custom output directories
+output/
+dist/
+build/
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Linux/Mac
+.swp
+.swo
+*~
+.vimrc
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# IDE-specific
+.settings/
+.classpath
+.project
