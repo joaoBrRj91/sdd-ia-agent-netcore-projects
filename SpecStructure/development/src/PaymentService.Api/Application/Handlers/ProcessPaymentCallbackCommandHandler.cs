@@ -20,12 +20,17 @@ public sealed class ProcessPaymentCallbackCommandHandler : ICommandHandler<Proce
 
         if (command.Data.Status == "approved")
         {
-            payment.ApprovePayment(command.Data.TransactionId);
+            payment.ApprovePayment(
+                command.Data.TransactionId,
+                command.Data.AmountReceived,
+                command.Data.ProcessedAt);
         }
         else if (command.Data.Status == "rejected")
         {
             payment.RejectPayment(
                 command.Data.TransactionId,
+                command.Data.AmountReceived,
+                command.Data.ProcessedAt,
                 command.Error?.Code,
                 command.Error?.Message);
         }

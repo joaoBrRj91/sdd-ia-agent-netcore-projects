@@ -119,7 +119,7 @@ The architecture follows an **Asynchronous Pattern**:
 ```json
 {
   "ticket": "550e8400-e29b-41d4-a716-446655440000",
-  "event_type": "payment.processed",
+  "event_type": "payment.sucessful",
   "timestamp": "2026-03-21T15:42:00Z",
   "data": {
     "transaction_id": "TX-999888777",
@@ -141,7 +141,68 @@ The architecture follows an **Asynchronous Pattern**:
 ```json
 {
   "ticket": "550e8400-e29b-41d4-a716-446655440000",
-  "event_type": "payment.processed",
+  "event_type": "payment.failed",
+  "timestamp": "2026-03-21T15:45:00Z",
+  "data": {
+    "transaction_id": "TX-failed-123",
+    "status": "rejected",
+    "payment_method": "pix",
+    "amount_received": 0.0,
+    "processed_at": "2026-03-21T15:44:50Z"
+  },
+  "error": {
+    "code": "insufficient_funds",
+    "message": "The transaction was declined due to insufficient funds."
+  }
+}
+```
+
+### 3. Get Payment Status
+
+**Endpoint:** `GET /payments/{ticket_id}`  
+**Description:** Get status of a payment by its ticket ID. If the status is not finished return only
+
+#### **Scenario A: Success but not finished**
+
+**Response Body:**
+
+```json
+{
+  "ticket": "550e8400-e29b-41d4-a716-446655440000",
+  "event_type": "payment.in_progress",
+  "timestamp": "2026-03-21T15:42:00Z",
+  "error": null
+}
+```
+
+#### **Scenario B: Success and finished**
+
+**Response Body:**
+
+```json
+{
+  "ticket": "550e8400-e29b-41d4-a716-446655440000",
+  "event_type": "payment.sucessful",
+  "timestamp": "2026-03-21T15:45:00Z",
+  "data": {
+    "transaction_id": "TX-failed-123",
+    "status": "rejected",
+    "payment_method": "pix",
+    "amount_received": 0.0,
+    "processed_at": "2026-03-21T15:44:50Z"
+  },
+  "error": null
+}
+```
+
+#### **Scenario B: Failure**
+
+**Response Body:**
+
+```json
+{
+  "ticket": "550e8400-e29b-41d4-a716-446655440000",
+  "event_type": "payment.failed",
   "timestamp": "2026-03-21T15:45:00Z",
   "data": {
     "transaction_id": "TX-failed-123",

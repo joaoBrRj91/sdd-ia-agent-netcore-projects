@@ -1,5 +1,6 @@
 using PaymentService.Api.Application.Commands;
 using PaymentService.Api.Application.Handlers;
+using PaymentService.Api.Application.Cache;
 using PaymentService.Api.Models;
 
 namespace PaymentService.Api.Application.Services;
@@ -7,10 +8,14 @@ namespace PaymentService.Api.Application.Services;
 public sealed class ProcessPaymentCallbackService : IProcessPaymentCallbackService
 {
     private readonly ICommandHandler<ProcessPaymentCallbackCommand, Unit> _commandHandler;
+    private readonly ICacheProvider _cache;
 
-    public ProcessPaymentCallbackService(ICommandHandler<ProcessPaymentCallbackCommand, Unit> commandHandler)
+    public ProcessPaymentCallbackService(
+        ICommandHandler<ProcessPaymentCallbackCommand, Unit> commandHandler,
+        ICacheProvider cache)
     {
         _commandHandler = commandHandler;
+        _cache = cache;
     }
 
     public async Task ProcessCallbackAsync(CallbackNotification notification)
@@ -40,5 +45,8 @@ public sealed class ProcessPaymentCallbackService : IProcessPaymentCallbackServi
 
         // Execute command
         await _commandHandler.HandleAsync(command);
+
+        // Invalidate cached payment status on successful callback
+        await _cache.InvalidateAsync($"payment:status:{notification.Ticket}");
     }
 }

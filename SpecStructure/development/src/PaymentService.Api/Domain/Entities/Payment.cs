@@ -31,6 +31,16 @@ public sealed class Payment
     public PaymentStatus Status { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? UpdatedAt { get; private set; }
+
+    // Transaction details from callback
+    public string? TransactionId { get; private set; }
+    public decimal? AmountReceived { get; private set; }
+    public DateTimeOffset? ProcessedAt { get; private set; }
+    public string? AuthorizationCode { get; private set; }
+    public decimal? FeeDeducted { get; private set; }
+    public string? ErrorCode { get; private set; }
+    public string? ErrorMessage { get; private set; }
+
     public IReadOnlyList<DomainEvent> Events => _events.AsReadOnly();
 
     public static Payment Create(
@@ -53,32 +63,52 @@ public sealed class Payment
 
         var ticket = Guid.NewGuid();
         var payment = new Payment(ticket, orderId, money, method, customer);
-        
+
         payment.AddEvent(new PaymentCreatedEvent(
             ticket, orderId, amount, currency, paymentMethodType, ticket, "Pending", DateTimeOffset.UtcNow));
 
         return payment;
     }
 
-    public void ApprovePayment(string transactionId)
+    public void ApprovePayment(
+        string transactionId,
+        decimal amountReceived,
+        DateTimeOffset processedAt,
+        string? authorizationCode = null,
+        decimal? feeDeducted = null)
     {
         if (Status != PaymentStatus.Pending)
             throw new InvalidOperationException("Cannot approve a payment that is not pending");
 
         Status = PaymentStatus.Approved;
         UpdatedAt = DateTimeOffset.UtcNow;
-        
+        TransactionId = transactionId;
+        AmountReceived = amountReceived;
+        ProcessedAt = processedAt;
+        AuthorizationCode = authorizationCode;
+        FeeDeducted = feeDeducted;
+
         AddEvent(new PaymentApprovedEvent(Ticket, transactionId, UpdatedAt.Value));
     }
 
-    public void RejectPayment(string transactionId, string? errorCode = null, string? errorMessage = null)
+    public void RejectPayment(
+        string transactionId,
+        decimal amountReceived,
+        DateTimeOffset processedAt,
+        string? errorCode = null,
+        string? errorMessage = null)
     {
         if (Status != PaymentStatus.Pending)
             throw new InvalidOperationException("Cannot reject a payment that is not pending");
 
         Status = PaymentStatus.Rejected;
         UpdatedAt = DateTimeOffset.UtcNow;
-        
+        TransactionId = transactionId;
+        AmountReceived = amountReceived;
+        ProcessedAt = processedAt;
+        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
+
         AddEvent(new PaymentRejectedEvent(Ticket, transactionId, errorCode, errorMessage, UpdatedAt.Value));
     }
 

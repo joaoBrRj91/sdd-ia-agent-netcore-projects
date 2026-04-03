@@ -1,4 +1,3 @@
-
 using PaymentService.Api.Application.Services;
 using PaymentService.Api.Models;
 
@@ -32,6 +31,15 @@ public static class PaymentRoutes
             {
                 return Results.BadRequest(new { error = ex.Message });
             }
+        });
+
+        app.MapGet("/payments/{ticket:guid}", async (Guid ticket, IGetPaymentStatusService service) =>
+        {
+            var response = await service.GetPaymentStatusAsync(ticket);
+            if (response is null)
+                return Results.NotFound();
+
+            return Results.Ok(response);
         });
     }
 }
