@@ -12,8 +12,12 @@ public sealed record CallbackData(
     string Status,
     string PaymentMethod,
     decimal AmountReceived,
-    DateTimeOffset ProcessedAt);
+    DateTimeOffset ProcessedAt,
+    string? AuthorizationCode,
+    decimal? FeeDeducted);
 
 public sealed record CallbackError(
     string Code,
     string Message);
+
+public readonly record struct ProcessPaymentCallbackResult(bool PaymentFound);

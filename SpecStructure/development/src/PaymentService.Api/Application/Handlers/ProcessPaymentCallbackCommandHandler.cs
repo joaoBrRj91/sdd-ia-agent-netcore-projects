@@ -3,7 +3,7 @@ using PaymentService.Api.Domain.Repositories;
 
 namespace PaymentService.Api.Application.Handlers;
 
-public sealed class ProcessPaymentCallbackCommandHandler : ICommandHandler<ProcessPaymentCallbackCommand, Unit>
+public sealed class ProcessPaymentCallbackCommandHandler : ICommandHandler<ProcessPaymentCallbackCommand, ProcessPaymentCallbackResult>
 {
     private readonly IPaymentRepository _repository;
 
@@ -12,18 +12,20 @@ public sealed class ProcessPaymentCallbackCommandHandler : ICommandHandler<Proce
         _repository = repository;
     }
 
-    public async Task<Unit> HandleAsync(ProcessPaymentCallbackCommand command)
+    public async Task<ProcessPaymentCallbackResult> HandleAsync(ProcessPaymentCallbackCommand command)
     {
         var payment = await _repository.GetByTicketAsync(command.Ticket);
         if (payment is null)
-            return Unit.Value;
+            return new ProcessPaymentCallbackResult(false);
 
         if (command.Data.Status == "approved")
         {
             payment.ApprovePayment(
                 command.Data.TransactionId,
                 command.Data.AmountReceived,
-                command.Data.ProcessedAt);
+                command.Data.ProcessedAt,
+                command.Data.AuthorizationCode,
+                command.Data.FeeDeducted);
         }
         else if (command.Data.Status == "rejected")
         {
@@ -36,11 +38,6 @@ public sealed class ProcessPaymentCallbackCommandHandler : ICommandHandler<Proce
         }
 
         await _repository.SaveAsync(payment);
-        return Unit.Value;
+        return new ProcessPaymentCallbackResult(true);
     }
-}
-
-public struct Unit
-{
-    public static Unit Value => default;
 }

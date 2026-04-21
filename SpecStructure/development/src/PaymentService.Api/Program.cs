@@ -8,6 +8,8 @@ using PaymentService.Api.Application.Cache;
 using PaymentService.Api.Domain.Repositories;
 using PaymentService.Api.Infrastructure.Repositories;
 using PaymentService.Api.Infrastructure.Cache;
+using PaymentService.Api.Infrastructure.Messaging;
+using PaymentService.Api.Application.Messaging;
 using PaymentService.Api.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +22,8 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 
 // Register infrastructure
 builder.Services.AddMemoryCache();
-builder.Services.AddScoped<IPaymentRepository, InMemoryPaymentRepository>();
+// Singleton so the in-memory store is shared across HTTP requests (required for create → callback → GET flows).
+builder.Services.AddSingleton<IPaymentRepository, InMemoryPaymentRepository>();
 builder.Services.AddScoped<ICacheProvider, MemoryCacheProvider>();
 
 // Bind CacheSettings from configuration
@@ -29,7 +32,12 @@ builder.Services.Configure<CacheSettings>(
 
 // Register command handlers
 builder.Services.AddScoped<ICommandHandler<CreatePaymentCommand, CreatePaymentResponseDto>, CreatePaymentCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<ProcessPaymentCallbackCommand, Unit>, ProcessPaymentCallbackCommandHandler>();
+builder.Services.AddSingleton<InMemoryIntegrationMessageQueue>();
+builder.Services.AddSingleton<IIntegrationMessagePublisher>(sp =>
+    sp.GetRequiredService<InMemoryIntegrationMessageQueue>());
+builder.Services.AddHostedService<IntegrationMessageConsumerHostedService>();
+
+builder.Services.AddScoped<ICommandHandler<ProcessPaymentCallbackCommand, ProcessPaymentCallbackResult>, ProcessPaymentCallbackCommandHandler>();
 
 // Register application services
 builder.Services.AddScoped<ICreatePaymentService, CreatePaymentService>();
